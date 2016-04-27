@@ -1,5 +1,6 @@
 ﻿Public Class frmImageModifier
     Dim myImage As Bitmap
+  
     Private Sub btnOpen_Click(sender As Object, e As EventArgs) Handles btnOpen.Click
         'OpenFIleDialog object from the OpenFIleDialog class
         'to launch an open file dialog window
@@ -60,47 +61,45 @@
     Private Sub btnConvert_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles btnConvert.Click
         If picOriginal.Image IsNot Nothing Then
             myImage = New Bitmap(picOriginal.Image)
-            Dim r, g, b, average As Integer
+            Dim r, g, b, average, averageR, averageB, averageG As Integer
             Dim newColor As Color
 
             'the if statements only executed when user selects any of the items
             If cboFilter.SelectedItem IsNot Nothing Then
-                'loops will go through every pixel of height and width
-                For y = 0 To myImage.Height - 1
-                    For x = 0 To myImage.Width - 1
-                        'get pixel returns color of specified pixel
-                        Dim pixelColor As Color = myImage.GetPixel(x, y)
-                        'R property contains a byte value that represents red
-                        r = CInt(pixelColor.R)
-                        'G represents green
-                        g = CInt(pixelColor.G)
-                        'B represents blue
-                        b = CInt(pixelColor.B)
 
-                        Select Case cboFilter.SelectedItem.ToString
-                            Case "   Monochrome"
-                                average = CInt((r + g + b) / 3)
-                                If (average > 128) Then
-                                    r = 255
-                                    g = 255
-                                    b = 255
-                                Else
-                                    r = 0
-                                    g = 0
-                                    b = 0
-                                End If
+                Select Case cboFilter.SelectedItem.ToString
 
-                                'constructs another color object that stored new color info of pixel
-                                newColor = Color.FromArgb(r, g, b)
-                            Case "   Gray - Averaging"
-                                average = CInt((r + g + b) / 3)
-                                'construct another color object that stores new info for pixel
-                                newColor = Color.FromArgb(average, average, average)
-                        End Select
-                        'set pixel method uses new color to convert it
-                        myImage.SetPixel(x, y, newColor)
-                    Next
-                Next
+                    Case "   Monochrome"
+                        Me.ConvertImageMonochrome(myImage, newColor, r, g, b, average)
+
+                    Case "   Sepia"
+                        Me.ConvertImageSepia(myImage, newColor, r, g, b, average, averageR, averageG, averageB)
+
+                    Case "   Gray - Averaging"
+                        Me.ConvertImageGrayAveraging(myImage, newColor, r, g, b, average)
+
+                    Case "   Luma"
+                        Me.ConvertImageLuma(myImage, newColor, r, g, b, average)
+
+                    Case "   Desaturation"
+                        Me.ConvertImageDesaturation(myImage, newColor, r, g, b, average)
+
+                    Case "   DecompositionMax"
+                        Me.ConvertImageDecompositionMin(myImage, newColor, r, g, b, average)
+
+                    Case "   DecompositionMin"
+                        Me.ConvertImageDecompositionMin(myImage, newColor, r, g, b, average)
+
+                    Case "   SingleChannelRed"
+                        Me.ConvertImageSingleRed(myImage, newColor, r, g, b, average)
+
+                    Case "   SingleChannelGreen"
+                        Me.ConvertImageSingleGreen(myImage, newColor, r, g, b, average)
+
+                    Case "   SingleChannelBlue"
+                        Me.ConvertImageSingleBlue(myImage, newColor, r, g, b, average)
+
+                End Select  
                 'the following statement displays converted image in right pic box
                 picConverted.Image = myImage
                 picConverted.BorderStyle = BorderStyle.None
@@ -109,5 +108,210 @@
             End If
             MessageBox.Show("Please select a picture to convert.", "Error")
         End If
+    End Sub
+
+    Private Sub ConvertImageMonochrome(ByRef myImage As Bitmap, myNewColor As Color, myR As Integer, myG As Integer, myB As Integer, myAverage As Integer)
+        'loops will go through every pixel of height and width
+        For y = 0 To myImage.Height - 1
+            For x = 0 To myImage.Width - 1
+                'get pixel returns color of specified pixel
+                Dim pixelColor As Color = myImage.GetPixel(x, y)
+                'R property contains a byte value that represents red
+                myR = CInt(pixelColor.R)
+                'G represents green
+                myG = CInt(pixelColor.G)
+                'B represents blue
+                myB = CInt(pixelColor.B)
+
+                myAverage = CInt((myR + myG + myB) / 3)
+                If (myAverage > 128) Then
+                    myR = 255
+                    myG = 255
+                    myB = 255
+                Else
+                    myR = 0
+                    myG = 0
+                    myB = 0
+                End If
+                'constructs another color object that stored new color info of pixel
+                myNewColor = Color.FromArgb(myR, myG, myB)
+                'set pixel method uses new color to convert it
+                myImage.SetPixel(x, y, myNewColor)
+            Next
+        Next
+        'the following statement displays converted image in right pic box
+        picConverted.Image = myImage
+        picConverted.BorderStyle = BorderStyle.None
+    End Sub
+    Private Sub ConvertImageSepia(ByRef myImage As Bitmap, myNewColor As Color, myR As Integer, myG As Integer, myB As Integer,
+                         myAverageR As Integer, myAverageG As Integer, myAverageB As Integer, myAverage As Integer)
+        For y = 0 To myImage.Height - 1
+            For x = 0 To myImage.Width - 1
+                Dim pixelColor As Color = myImage.GetPixel(x, y)
+                myR = CInt(pixelColor.R)
+                myG = CInt(pixelColor.G)
+                myB = CInt(pixelColor.B)
+
+                myAverageR = CInt((myR * 0.393) + (myG * 0.769) + (myB * 0.189))
+                myAverageG = CInt((myR * 0.349) + (myG * 0.686) + (myB * 0.168))
+                myAverageB = CInt((myR * 0.272) + (myG * 0.534) + (myB * 0.131))
+                'if average is greater then 255 set to 255
+                If (myAverageR > 255) Then
+                    myAverageR = 255
+                    If (myAverageG > 255) Then
+                        myAverageG = 255
+                        If (myAverageB > 255) Then
+                            myAverageB = 255
+                        End If
+                    End If
+                End If
+                myNewColor = Color.FromArgb(myAverageR, myAverageG, myAverageB)
+                myImage.SetPixel(x, y, myNewColor)
+            Next
+        Next
+        picConverted.Image = myImage
+        picConverted.BorderStyle = BorderStyle.None
+    End Sub
+
+    Private Sub ConvertImageGrayAveraging(ByRef myImage As Bitmap, myNewColor As Color, myR As Integer, myG As Integer, myB As Integer, myAverage As Integer)
+        For y = 0 To myImage.Height - 1
+            For x = 0 To myImage.Width - 1
+                Dim pixelColor As Color = myImage.GetPixel(x, y)
+                myR = CInt(pixelColor.R)
+                myG = CInt(pixelColor.G)
+                myB = CInt(pixelColor.B)
+
+                myAverage = CInt((myR + myG + myB) / 3)
+                myNewColor = Color.FromArgb(myAverage, myAverage, myAverage)
+                myImage.SetPixel(x, y, myNewColor)
+            Next
+        Next
+        picConverted.Image = myImage
+        picConverted.BorderStyle = BorderStyle.None
+    End Sub
+
+    Private Sub ConvertImageLuma(ByRef myImage As Bitmap, myNewColor As Color, myR As Integer, myG As Integer, myB As Integer, myAverage As Integer)
+        For y = 0 To myImage.Height - 1
+            For x = 0 To myImage.Width - 1
+                Dim pixelColor As Color = myImage.GetPixel(x, y)
+                myR = CInt(pixelColor.R)
+                myG = CInt(pixelColor.G)
+                myB = CInt(pixelColor.B)
+
+                myAverage = CInt((myR * 0.2126) + (myG * 0.7152) + (myB * 0.0722))
+                myNewColor = Color.FromArgb(myAverage, myAverage, myAverage)
+                myImage.SetPixel(x, y, myNewColor)
+            Next
+        Next
+        picConverted.Image = myImage
+        picConverted.BorderStyle = BorderStyle.None
+    End Sub
+
+    Private Sub ConvertImageDesaturation(ByRef myImage As Bitmap, myNewColor As Color, myR As Integer, myG As Integer, myB As Integer, myAverage As Integer)
+        For y = 0 To myImage.Height - 1
+            For x = 0 To myImage.Width - 1
+                Dim pixelColor As Color = myImage.GetPixel(x, y)
+                myR = CInt(pixelColor.R)
+                myG = CInt(pixelColor.G)
+                myB = CInt(pixelColor.B)
+
+                myAverage = CInt(Math.Max(myR, Math.Max(myG, myB)) + Math.Min(myR, Math.Max(myG, myB)) / 2)
+                'if average is greater then 255 set to 255
+                If (myAverage > 255) Then
+                    myAverage = 255
+                End If
+                myNewColor = Color.FromArgb(myAverage, myAverage, myAverage)
+                myImage.SetPixel(x, y, myNewColor)
+            Next
+        Next
+        picConverted.Image = myImage
+        picConverted.BorderStyle = BorderStyle.None
+    End Sub
+
+    Private Sub ConvertImageDecompositionMin(ByRef myImage As Bitmap, myNewColor As Color, myR As Integer, myG As Integer, myB As Integer, myAverage As Integer)
+        For y = 0 To myImage.Height - 1
+            For x = 0 To myImage.Width - 1
+                Dim pixelColor As Color = myImage.GetPixel(x, y)
+                myR = CInt(pixelColor.R)
+                myG = CInt(pixelColor.G)
+                myB = CInt(pixelColor.B)
+
+                myAverage = CInt(Math.Max(myR, Math.Max(myG, myB)))
+                'if average is greater then 255 set to 255
+                If (myAverage > 255) Then
+                    myAverage = 255
+                End If
+                myNewColor = Color.FromArgb(myAverage, myAverage, myAverage)
+                myImage.SetPixel(x, y, myNewColor)
+            Next
+        Next
+        picConverted.Image = myImage
+        picConverted.BorderStyle = BorderStyle.None
+    End Sub
+
+    Private Sub ConvertImageDecompositionMax(ByRef myImage As Bitmap, myNewColor As Color, myR As Integer, myG As Integer, myB As Integer, myAverage As Integer)
+        For y = 0 To myImage.Height - 1
+            For x = 0 To myImage.Width - 1
+                Dim pixelColor As Color = myImage.GetPixel(x, y)
+                myR = CInt(pixelColor.R)
+                myG = CInt(pixelColor.G)
+                myB = CInt(pixelColor.B)
+
+                myAverage = CInt(Math.Min(myR, Math.Min(myG, myB)))
+                myNewColor = Color.FromArgb(myAverage, myAverage, myAverage)
+                myImage.SetPixel(x, y, myNewColor)
+            Next
+        Next
+        picConverted.Image = myImage
+        picConverted.BorderStyle = BorderStyle.None
+    End Sub
+
+    Private Sub ConvertImageSingleRed(ByRef myImage As Bitmap, myNewColor As Color, myR As Integer, myG As Integer, myB As Integer, myAverage As Integer)
+        For y = 0 To myImage.Height - 1
+            For x = 0 To myImage.Width - 1
+                Dim pixelColor As Color = myImage.GetPixel(x, y)
+                myR = CInt(pixelColor.R)
+                myG = CInt(pixelColor.G)
+                myB = CInt(pixelColor.B)
+
+                myAverage = CInt(myR)
+                myNewColor = Color.FromArgb(myAverage, myAverage, myAverage)
+                myImage.SetPixel(x, y, myNewColor)
+            Next
+        Next
+        picConverted.Image = myImage
+        picConverted.BorderStyle = BorderStyle.None
+    End Sub
+    Private Sub ConvertImageSingleBlue(ByRef myImage As Bitmap, myNewColor As Color, myR As Integer, myG As Integer, myB As Integer, myAverage As Integer)
+        For y = 0 To myImage.Height - 1
+            For x = 0 To myImage.Width - 1
+                Dim pixelColor As Color = myImage.GetPixel(x, y)
+                myR = CInt(pixelColor.R)
+                myG = CInt(pixelColor.G)
+                myB = CInt(pixelColor.B)
+
+                myAverage = CInt(myB)
+                myNewColor = Color.FromArgb(myAverage, myAverage, myAverage)
+                myImage.SetPixel(x, y, myNewColor)
+            Next
+        Next
+        picConverted.Image = myImage
+        picConverted.BorderStyle = BorderStyle.None
+    End Sub
+    Private Sub ConvertImageSingleGreen(ByRef myImage As Bitmap, myNewColor As Color, myR As Integer, myG As Integer, myB As Integer, myAverage As Integer)
+        For y = 0 To myImage.Height - 1
+            For x = 0 To myImage.Width - 1
+                Dim pixelColor As Color = myImage.GetPixel(x, y)
+                myR = CInt(pixelColor.R)
+                myG = CInt(pixelColor.G)
+                myB = CInt(pixelColor.B)
+
+                myAverage = CInt(myG)
+                myNewColor = Color.FromArgb(myAverage, myAverage, myAverage)
+                myImage.SetPixel(x, y, myNewColor)
+            Next
+        Next
+        picConverted.Image = myImage
+        picConverted.BorderStyle = BorderStyle.None
     End Sub
 End Class

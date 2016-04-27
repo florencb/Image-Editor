@@ -36,11 +36,12 @@ Partial Class frmImageModifier
         '
         'btnOpen
         '
-        Me.btnOpen.BackColor = System.Drawing.Color.Maroon
+        Me.btnOpen.BackColor = System.Drawing.Color.SteelBlue
         Me.btnOpen.FlatAppearance.BorderSize = 0
         Me.btnOpen.FlatStyle = System.Windows.Forms.FlatStyle.Flat
+        Me.btnOpen.Font = New System.Drawing.Font("Times New Roman", 11.25!, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
         Me.btnOpen.ForeColor = System.Drawing.Color.White
-        Me.btnOpen.Location = New System.Drawing.Point(23, 13)
+        Me.btnOpen.Location = New System.Drawing.Point(76, 28)
         Me.btnOpen.Name = "btnOpen"
         Me.btnOpen.Size = New System.Drawing.Size(75, 23)
         Me.btnOpen.TabIndex = 0
@@ -52,8 +53,9 @@ Partial Class frmImageModifier
         Me.btnConvert.BackColor = System.Drawing.Color.LightSeaGreen
         Me.btnConvert.FlatAppearance.BorderSize = 0
         Me.btnConvert.FlatStyle = System.Windows.Forms.FlatStyle.Flat
+        Me.btnConvert.Font = New System.Drawing.Font("Times New Roman", 11.25!, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
         Me.btnConvert.ForeColor = System.Drawing.Color.White
-        Me.btnConvert.Location = New System.Drawing.Point(347, 13)
+        Me.btnConvert.Location = New System.Drawing.Point(432, 26)
         Me.btnConvert.Name = "btnConvert"
         Me.btnConvert.Size = New System.Drawing.Size(75, 23)
         Me.btnConvert.TabIndex = 1
@@ -62,11 +64,12 @@ Partial Class frmImageModifier
         '
         'btnSave
         '
-        Me.btnSave.BackColor = System.Drawing.Color.Green
+        Me.btnSave.BackColor = System.Drawing.Color.RoyalBlue
         Me.btnSave.FlatAppearance.BorderSize = 0
         Me.btnSave.FlatStyle = System.Windows.Forms.FlatStyle.Flat
+        Me.btnSave.Font = New System.Drawing.Font("Times New Roman", 11.25!, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
         Me.btnSave.ForeColor = System.Drawing.Color.White
-        Me.btnSave.Location = New System.Drawing.Point(441, 13)
+        Me.btnSave.Location = New System.Drawing.Point(610, 26)
         Me.btnSave.Name = "btnSave"
         Me.btnSave.Size = New System.Drawing.Size(75, 23)
         Me.btnSave.TabIndex = 2
@@ -75,43 +78,46 @@ Partial Class frmImageModifier
         '
         'cboFilter
         '
-        Me.cboFilter.BackColor = System.Drawing.Color.Indigo
+        Me.cboFilter.BackColor = System.Drawing.Color.DimGray
         Me.cboFilter.FlatStyle = System.Windows.Forms.FlatStyle.Flat
+        Me.cboFilter.Font = New System.Drawing.Font("Times New Roman", 11.25!, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
         Me.cboFilter.ForeColor = System.Drawing.Color.White
         Me.cboFilter.FormattingEnabled = True
-        Me.cboFilter.Items.AddRange(New Object() {"   Monochrome", "   Gray - Averaging"})
-        Me.cboFilter.Location = New System.Drawing.Point(117, 14)
+        Me.cboFilter.Items.AddRange(New Object() {"   Monochrome", "   Gray - Averaging", "   Luma", "   Desaturation", "   DecompositionMax", "   DecompositionMin", "   SingleChannelRed", "   SingleChannelGreen", "   SingleChannelBlue", "   Sepia"})
+        Me.cboFilter.Location = New System.Drawing.Point(188, 26)
         Me.cboFilter.Name = "cboFilter"
-        Me.cboFilter.Size = New System.Drawing.Size(196, 21)
+        Me.cboFilter.Size = New System.Drawing.Size(196, 25)
         Me.cboFilter.TabIndex = 3
         Me.cboFilter.Text = "   Please select a filter"
         '
         'Label1
         '
         Me.Label1.AutoSize = True
-        Me.Label1.ForeColor = System.Drawing.Color.LightSteelBlue
-        Me.Label1.Location = New System.Drawing.Point(9, 55)
+        Me.Label1.Font = New System.Drawing.Font("Times New Roman", 11.25!, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
+        Me.Label1.ForeColor = System.Drawing.Color.GhostWhite
+        Me.Label1.Location = New System.Drawing.Point(32, 71)
         Me.Label1.Name = "Label1"
-        Me.Label1.Size = New System.Drawing.Size(42, 13)
+        Me.Label1.Size = New System.Drawing.Size(61, 17)
         Me.Label1.TabIndex = 4
         Me.Label1.Text = "Original"
         '
         'Label2
         '
         Me.Label2.AutoSize = True
-        Me.Label2.ForeColor = System.Drawing.Color.LightSteelBlue
-        Me.Label2.Location = New System.Drawing.Point(316, 55)
+        Me.Label2.Font = New System.Drawing.Font("Times New Roman", 11.25!, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
+        Me.Label2.ForeColor = System.Drawing.Color.GhostWhite
+        Me.Label2.Location = New System.Drawing.Point(388, 71)
         Me.Label2.Name = "Label2"
-        Me.Label2.Size = New System.Drawing.Size(45, 13)
+        Me.Label2.Size = New System.Drawing.Size(61, 17)
         Me.Label2.TabIndex = 5
         Me.Label2.Text = "Preview"
         '
         'picOriginal
         '
         Me.picOriginal.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle
-        Me.picOriginal.Location = New System.Drawing.Point(12, 75)
+        Me.picOriginal.Location = New System.Drawing.Point(35, 91)
         Me.picOriginal.Name = "picOriginal"
-        Me.picOriginal.Size = New System.Drawing.Size(293, 233)
+        Me.picOriginal.Size = New System.Drawing.Size(342, 331)
         Me.picOriginal.SizeMode = System.Windows.Forms.PictureBoxSizeMode.StretchImage
         Me.picOriginal.TabIndex = 6
         Me.picOriginal.TabStop = False
@@ -119,19 +125,20 @@ Partial Class frmImageModifier
         'picConverted
         '
         Me.picConverted.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle
-        Me.picConverted.Location = New System.Drawing.Point(319, 75)
+        Me.picConverted.Location = New System.Drawing.Point(391, 91)
         Me.picConverted.Name = "picConverted"
-        Me.picConverted.Size = New System.Drawing.Size(293, 233)
+        Me.picConverted.Size = New System.Drawing.Size(342, 331)
         Me.picConverted.SizeMode = System.Windows.Forms.PictureBoxSizeMode.StretchImage
         Me.picConverted.TabIndex = 7
         Me.picConverted.TabStop = False
         '
         'frmImageModifier
         '
+        Me.AcceptButton = Me.btnConvert
         Me.AutoScaleDimensions = New System.Drawing.SizeF(6.0!, 13.0!)
         Me.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font
         Me.BackColor = System.Drawing.Color.Black
-        Me.ClientSize = New System.Drawing.Size(616, 326)
+        Me.ClientSize = New System.Drawing.Size(760, 442)
         Me.Controls.Add(Me.picConverted)
         Me.Controls.Add(Me.picOriginal)
         Me.Controls.Add(Me.Label2)
